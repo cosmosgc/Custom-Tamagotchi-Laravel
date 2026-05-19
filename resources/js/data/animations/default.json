@@ -1,0 +1,64 @@
+{
+  "spritesheets": [
+    {
+      "id": "body",
+      "src": "imagesExample/182528.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "rows": 10,
+      "cols": 10
+    },
+    {
+      "id": "expressions",
+      "src": "imagesExample/182839.png",
+      "frameWidth": 32,
+      "frameHeight": 32,
+      "rows": 11,
+      "cols": 11
+    }
+  ],
+  "animations": {
+    "idle": {
+      "spritesheet": "body",
+      "frames": [0, 1, 2, 1],
+      "speed": 0.12,
+      "loop": true
+    },
+    "idle_blink": {
+      "spritesheet": "body",
+      "frames": [3, 4, 3],
+      "speed": 0.15,
+      "loop": false
+    },
+    "happy": {
+      "spritesheet": "body",
+      "frames": [5, 6, 7, 6, 5],
+      "speed": 0.1,
+      "loop": true
+    },
+    "hungry": {
+      "spritesheet": "body",
+      "frames": [8, 9, 8],
+      "speed": 0.18,
+      "loop": true
+    },
+    "sleep": {
+      "spritesheet": "expressions",
+      "frames": [0, 1, 0, 1],
+      "speed": 0.2,
+      "loop": true
+    },
+    "sad": {
+      "spritesheet": "expressions",
+      "frames": [2, 3, 2],
+      "speed": 0.15,
+      "loop": true
+    },
+    "play": {
+      "spritesheet": "expressions",
+      "frames": [4, 5, 6, 5, 4],
+      "speed": 0.08,
+      "loop": true
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "name": "Milo",
+  "species": "Fox",
+  "colors": {
+    "fur": "#ff9900",
+    "eyes": "#336633",
+    "belly": "#ffcc99"
+  },
+  "personality": {
+    "energy": 0.8,
+    "affection": 0.9,
+    "chaos": 0.3
+  },
+  "favorite_foods": ["berries", "cake"],
+  "sprites": {
+    "idle": "",
+    "sleep": ""
+  },
+  "animations": {
+    "idle": "",
+    "sleep": ""
+  }
+}

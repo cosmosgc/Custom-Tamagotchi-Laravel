@@ -1,0 +1,54 @@
+{
+  "furniture": [
+    {
+      "id": "bed",
+      "label": "Cozy Bed",
+      "description": "A soft bed for sleeping",
+      "width": 2,
+      "height": 1,
+      "color": "#8B4513",
+      "interactions": ["sleep"],
+      "price": 100
+    },
+    {
+      "id": "bowl",
+      "label": "Food Bowl",
+      "description": "For serving meals",
+      "width": 1,
+      "height": 1,
+      "color": "#C0C0C0",
+      "interactions": ["feed"],
+      "price": 30
+    },
+    {
+      "id": "toy_box",
+      "label": "Toy Box",
+      "description": "Holds toys and games",
+      "width": 1,
+      "height": 1,
+      "color": "#FF6347",
+      "interactions": ["play"],
+      "price": 75
+    },
+    {
+      "id": "chair",
+      "label": "Comfy Chair",
+      "description": "A chair to sit and relax",
+      "width": 1,
+      "height": 1,
+      "color": "#556B2F",
+      "interactions": ["sit"],
+      "price": 50
+    },
+    {
+      "id": "table",
+      "label": "Small Table",
+      "description": "A table for decorations",
+      "width": 2,
+      "height": 2,
+      "color": "#D2B48C",
+      "interactions": [],
+      "price": 60
+    }
+  ]
+}

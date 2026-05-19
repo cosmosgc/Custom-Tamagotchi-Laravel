@@ -1,0 +1,19 @@
+{
+  "name": "Cozy Room",
+  "background": {
+    "wallColor": "#f5e6ca",
+    "floorColor": "#c4a882",
+    "width": 800,
+    "height": 600
+  },
+  "grid": {
+    "cols": 10,
+    "rows": 8,
+    "cellSize": 64
+  },
+  "furnitureSlots": [
+    { "id": "bed", "col": 3, "row": 3, "label": "Bed" },
+    { "id": "bowl", "col": 7, "row": 5, "label": "Food Bowl" },
+    { "id": "toy_box", "col": 8, "row": 2, "label": "Toy Box" }
+  ]
+}
