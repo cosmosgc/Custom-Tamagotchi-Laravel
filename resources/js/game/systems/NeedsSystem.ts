@@ -1,14 +1,22 @@
 import { GameStore } from '../state/GameStore';
+import { TimeSimulationSystem } from './TimeSimulationSystem';
 
 export class NeedsSystem {
   private store: GameStore;
+  private timeSim: TimeSimulationSystem;
   private timer: number = 0;
 
-  constructor(store: GameStore) {
+  constructor(store: GameStore, timeSim: TimeSimulationSystem) {
     this.store = store;
+    this.timeSim = timeSim;
+  }
+
+  processOffline(): void {
+    this.timeSim.processOfflineTime();
   }
 
   update(delta: number): void {
+    this.timeSim.update(delta);
     this.timer += delta;
 
     if (this.timer >= 60) {
@@ -20,21 +28,22 @@ export class NeedsSystem {
   private tick(): void {
     const s = this.store.getState().companion;
 
-    const hunger = Math.max(0, s.hunger - 0.5);
-    const energy = Math.max(0, s.energy - 0.3);
-    const fun = Math.max(0, s.fun - 0.4);
-
     let mood = s.mood;
-    if (hunger < 20 || energy < 20) {
-      mood = 'sad';
-    } else if (fun < 30) {
+
+    if (s.sleeping) {
       mood = 'sleepy';
-    } else if (hunger > 60 && energy > 60) {
+    } else if (s.hunger < 20) {
+      mood = 'sad';
+    } else if (s.energy < 15) {
+      mood = 'sleepy';
+    } else if (s.hunger > 60 && s.energy > 60 && s.affection > 50) {
       mood = 'happy';
+    } else if (s.fun < 30) {
+      mood = 'sad';
     } else {
       mood = 'neutral';
     }
 
-    this.store.updateCompanion({ hunger, energy, fun, mood });
+    this.store.updateCompanion({ mood });
   }
 }

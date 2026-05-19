@@ -42,7 +42,7 @@ export class MovementSystem {
     this.companion.container.x += (dx / dist) * this.speed;
     this.companion.container.y += (dy / dist) * this.speed;
 
-    this.companion.container.scale.x = dx < 0 ? Math.abs(this.companion.container.scale.x) : -Math.abs(this.companion.container.scale.x);
+    this.companion.spriteContainer.scale.x = dx < 0 ? Math.abs(this.companion.spriteContainer.scale.x) : -Math.abs(this.companion.spriteContainer.scale.x);
   }
 
   isMoving(): boolean {

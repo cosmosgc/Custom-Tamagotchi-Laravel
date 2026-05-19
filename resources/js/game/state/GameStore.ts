@@ -2,6 +2,8 @@ export interface CompanionState {
   hunger: number;
   energy: number;
   fun: number;
+  affection: number;
+  sleeping: boolean;
   mood: 'happy' | 'neutral' | 'sad' | 'sleepy';
 }
 
@@ -23,6 +25,7 @@ export interface GameState {
   inventory: string[];
   coins: number;
   lastSave: number;
+  lastOnline: number;
 }
 
 type Listener = (state: GameState) => void;
@@ -32,6 +35,8 @@ const initialState: GameState = {
     hunger: 80,
     energy: 80,
     fun: 50,
+    affection: 30,
+    sleeping: false,
     mood: 'neutral',
   },
   room: {
@@ -45,6 +50,7 @@ const initialState: GameState = {
   inventory: [],
   coins: 0,
   lastSave: Date.now(),
+  lastOnline: Date.now(),
 };
 
 export class GameStore {

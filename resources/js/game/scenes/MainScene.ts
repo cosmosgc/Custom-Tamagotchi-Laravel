@@ -4,12 +4,31 @@ import { GameStore } from '../state/GameStore';
 import { Companion } from '../entities/Companion';
 import { Room } from '../entities/Room';
 import { getDefaultCompanionConfig } from '../entities/CompanionConfig';
+import { TimeSimulationSystem } from '../systems/TimeSimulationSystem';
 import { NeedsSystem } from '../systems/NeedsSystem';
 import { IdleBehaviorSystem } from '../systems/IdleBehaviorSystem';
-import { InteractionSystem } from '../systems/InteractionSystem';
+import { InteractionSystem, InteractionType } from '../systems/InteractionSystem';
 import { MovementSystem } from '../systems/MovementSystem';
 import { FurnitureSystem } from '../systems/FurnitureSystem';
 import defaultRoomData from '../../data/rooms/default.json';
+
+type MoodKey = 'happy' | 'neutral' | 'sad' | 'sleepy' | 'hungry' | 'greeting';
+
+const INTERACTION_EMOTE: Record<InteractionType, string> = {
+  feed: 'feed',
+  pet: 'pet',
+  play: 'play',
+  clean: 'clean',
+  talk: 'talk',
+};
+
+const INTERACTION_DIALOGUE: Record<InteractionType, MoodKey> = {
+  feed: 'happy',
+  pet: 'happy',
+  play: 'happy',
+  clean: 'neutral',
+  talk: 'happy',
+};
 
 export class MainScene extends BaseScene {
   private store: GameStore;
@@ -32,12 +51,16 @@ export class MainScene extends BaseScene {
   constructor(store: GameStore) {
     super('main');
     this.store = store;
-    this.needs = new NeedsSystem(store);
+
+    const timeSim = new TimeSimulationSystem(store);
+    this.needs = new NeedsSystem(store, timeSim);
     this.interaction = new InteractionSystem(store);
   }
 
   async init(): Promise<void> {
     this.container.removeChildren();
+
+    this.needs.processOffline();
 
     this.room = new Room(defaultRoomData, this.store);
     this.room.init();
@@ -46,14 +69,28 @@ export class MainScene extends BaseScene {
 
     const config = getDefaultCompanionConfig();
     this.companion = new Companion(config, this.store);
-    this.companion.container.x = 400;
-    this.companion.container.y = 280;
+    this.companion.x = 400;
+    this.companion.y = 280;
     this.container.addChild(this.companion.container);
     await this.companion.init();
 
     this.movement = new MovementSystem(this.companion);
     this.idleBehavior = new IdleBehaviorSystem(this.store, this.movement);
     this.furnitureSystem = new FurnitureSystem(this.store, this.room);
+
+    this.idleBehavior.onEvent((event) => {
+      if (event === 'sleep') {
+        this.companion.emote.show('sleep');
+        this.companion.dialogue.say('sleepy');
+      } else if (event === 'wake') {
+        this.companion.emote.show('wake');
+      }
+    });
+
+    this.interaction.onInteraction((type) => {
+      this.companion.emote.show(INTERACTION_EMOTE[type]);
+      this.companion.dialogue.say(INTERACTION_DIALOGUE[type]);
+    });
 
     this.infoText = new Text({
       text: this.formatStatus(),
@@ -67,6 +104,7 @@ export class MainScene extends BaseScene {
     this.container.addChild(this.infoText);
 
     this.createInteractionUI();
+    this.companion.dialogue.greet();
   }
 
   update(delta: number): void {
@@ -79,13 +117,15 @@ export class MainScene extends BaseScene {
   }
 
   private createInteractionUI(): void {
-    const buttons = [
+    const buttons: { label: string; action: () => void }[] = [
       { label: 'Feed', action: () => this.interaction.feed() },
       { label: 'Pet', action: () => this.interaction.pet() },
       { label: 'Play', action: () => this.interaction.play() },
+      { label: 'Clean', action: () => this.interaction.clean() },
+      { label: 'Talk', action: () => this.interaction.talk() },
     ];
 
-    const startX = 280;
+    const startX = 200;
     buttons.forEach((btn, i) => {
       const bg = new Graphics();
       bg.roundRect(0, 0, 80, 36, 8);
@@ -102,7 +142,7 @@ export class MainScene extends BaseScene {
       const btnContainer = new Container();
       btnContainer.addChild(bg);
       btnContainer.addChild(txt);
-      btnContainer.x = startX + i * 100;
+      btnContainer.x = startX + i * 90;
       btnContainer.y = 520;
       btnContainer.eventMode = 'static';
       btnContainer.cursor = 'pointer';
@@ -126,7 +166,9 @@ export class MainScene extends BaseScene {
       `Hunger: ${Math.round(s.hunger)}%`,
       `Energy: ${Math.round(s.energy)}%`,
       `Fun: ${Math.round(s.fun)}%`,
+      `Affection: ${Math.round(s.affection)}%`,
       `Mood: ${s.mood}`,
+      s.sleeping ? '💤' : '',
     ].join('  |  ');
   }
 

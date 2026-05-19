@@ -1,0 +1,51 @@
+{
+  "lines": {
+    "happy": [
+      "I'm so happy!",
+      "This is the best day ever!",
+      "Hehe, that tickles!",
+      "I love spending time with you!",
+      "You're my favorite person!",
+      "*purrs contentedly*"
+    ],
+    "neutral": [
+      "Hi there!",
+      "What should we do today?",
+      "I'm feeling okay.",
+      "*looks around curiously*",
+      "Hmm, I wonder what's for snack.",
+      "Just hanging out."
+    ],
+    "sad": [
+      "I'm a bit sad...",
+      "Could use a hug.",
+      "*sniffles*",
+      "Feeling lonely...",
+      "I miss you when you're away.",
+      "Can we cuddle?"
+    ],
+    "sleepy": [
+      "*yawns* I'm tired...",
+      "Time for a nap...",
+      "So sleepy...",
+      "Can I go to bed?",
+      "*eyes feel heavy*",
+      "Just five more minutes..."
+    ],
+    "hungry": [
+      "I'm hungry!",
+      "Got any snacks?",
+      "My tummy is rumbling...",
+      "Food... please...",
+      "When's dinner?",
+      "*sniffs the air*"
+    ],
+    "greeting": [
+      "You're back!",
+      "Welcome home!",
+      "I missed you!",
+      "Oh, you're here!",
+      "Yay, you're back!"
+    ]
+  }
+}
