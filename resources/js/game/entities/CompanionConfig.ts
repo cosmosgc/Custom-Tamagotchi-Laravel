@@ -1,11 +1,12 @@
 import type { CompanionConfig } from './Companion';
-import defaultAnimData from '../../data/animations/default.json';
+import { fetchAnimationConfig } from '../../api/gameDataLoader';
 
-export function getDefaultCompanionConfig(): CompanionConfig {
+export async function getDefaultCompanionConfig(): Promise<CompanionConfig> {
+  const data = await fetchAnimationConfig('default');
   return {
     name: 'Milo',
     scale: 2,
-    spritesheets: defaultAnimData.spritesheets,
-    animations: defaultAnimData.animations,
+    spritesheets: data.spritesheets,
+    animations: data.animations,
   };
 }

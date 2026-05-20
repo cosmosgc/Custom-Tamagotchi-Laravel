@@ -113,6 +113,11 @@ export class GameStore {
     this.emit();
   }
 
+  removeFromInventory(itemId: string): void {
+    this.state.inventory = this.state.inventory.filter((id) => id !== itemId);
+    this.emit();
+  }
+
   subscribe(listener: Listener): () => void {
     this.listeners.add(listener);
     return () => this.listeners.delete(listener);

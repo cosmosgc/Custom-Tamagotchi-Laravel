@@ -15,6 +15,23 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @auth
+                        @if(Auth::user()->is_admin)
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" @click.away="open = false" class="inline-flex items-center px-1 pt-1 text-sm font-medium leading-5 {{ request()->routeIs('admin.*') ? 'text-gray-900 dark:text-gray-100 border-b-2 border-indigo-400' : 'text-gray-500 dark:text-gray-400 border-b-2 border-transparent hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700' }} transition duration-150 ease-in-out focus:outline-none">
+                                    {{ __('Admin') }}
+                                    <svg class="ms-1 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                                </button>
+                                <div x-show="open" x-transition class="absolute left-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-md shadow-lg z-50 ring-1 ring-black/5">
+                                    <a href="{{ route('admin.species.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 {{ request()->routeIs('admin.species.*') ? 'bg-gray-100 dark:bg-gray-600' : '' }}">Species</a>
+                                    <a href="{{ route('admin.animations.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 {{ request()->routeIs('admin.animations.*') ? 'bg-gray-100 dark:bg-gray-600' : '' }}">Animations</a>
+                                    <a href="{{ route('admin.dialogue.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 {{ request()->routeIs('admin.dialogue.*') ? 'bg-gray-100 dark:bg-gray-600' : '' }}">Dialogue</a>
+                                    <a href="{{ route('admin.rooms.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 {{ request()->routeIs('admin.rooms.*') ? 'bg-gray-100 dark:bg-gray-600' : '' }}">Rooms</a>
+                                    <a href="{{ route('admin.furniture.index') }}" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-600 {{ request()->routeIs('admin.furniture.*') ? 'bg-gray-100 dark:bg-gray-600' : '' }}">Furniture</a>
+                                </div>
+                            </div>
+                        @endif
+                    @endauth
                 </div>
             </div>
 

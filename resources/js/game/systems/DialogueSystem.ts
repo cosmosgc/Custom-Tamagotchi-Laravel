@@ -1,15 +1,9 @@
 import { Container, Graphics, Text } from 'pixi.js';
 import { GameStore } from '../state/GameStore';
 import { randInt } from '../../utils/math';
-import dialogueData from '../../data/dialogue/default.json';
+import { fetchDialogue } from '../../api/gameDataLoader';
 
 type MoodKey = 'happy' | 'neutral' | 'sad' | 'sleepy' | 'hungry' | 'greeting';
-
-interface DialogueSet {
-  lines: Record<string, string[]>;
-}
-
-const data = dialogueData as DialogueSet;
 
 export class DialogueSystem {
   private store: GameStore;
@@ -19,6 +13,7 @@ export class DialogueSystem {
   private visible: boolean = false;
   private hideTimer: number = 0;
   private showTimer: number = 0;
+  private lines: Record<string, string[]> = {};
 
   constructor(store: GameStore, parent: Container) {
     this.store = store;
@@ -38,11 +33,20 @@ export class DialogueSystem {
     parent.addChild(this.bubble);
   }
 
-  say(mood: MoodKey, overrideText?: string): void {
-    const lines = data.lines[mood];
-    if (!lines) return;
+  async init(configKey = 'default'): Promise<void> {
+    try {
+      const data = await fetchDialogue(configKey);
+      this.lines = data.lines ?? {};
+    } catch {
+      this.lines = {};
+    }
+  }
 
-    const text = overrideText ?? lines[randInt(0, lines.length - 1)];
+  say(mood: MoodKey, overrideText?: string): void {
+    const moodLines = this.lines[mood];
+    if (!moodLines || moodLines.length === 0) return;
+
+    const text = overrideText ?? moodLines[randInt(0, moodLines.length - 1)];
     this.bubbleText.text = text;
 
     const padding = 8;
@@ -64,7 +68,6 @@ export class DialogueSystem {
 
   greet(): void {
     const affection = this.store.getState().companion.affection;
-    const intensity = affection > 70 ? 'happy' : affection > 40 ? 'neutral' : 'neutral';
     this.say('greeting');
   }
 

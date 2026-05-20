@@ -80,6 +80,7 @@ export class Companion {
       }
     }
 
+    await this.dialogue.init();
     this.updateAnimation();
   }
 
