@@ -21,6 +21,7 @@ class CompanionController extends Controller
         if (!$companion) {
             $companion = Companion::create([
                 'user_id' => $user->id,
+                'coins' => 100,
             ]);
         }
 

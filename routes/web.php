@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\CompanionController;
 use App\Http\Controllers\Api\GameDataController;
 use App\Http\Controllers\Api\InventoryController;
 use App\Http\Controllers\Api\RoomController;
+use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
@@ -50,11 +51,15 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/companion/user/{userId}', [CompanionController::class, 'showUser']);
 
+        Route::get('/shop/catalog', [ShopController::class, 'catalog']);
+        Route::post('/shop/buy', [ShopController::class, 'buy']);
+
         // Game data endpoints (from database instead of JSON files)
         Route::get('/game-data/species/{configKey?}', [GameDataController::class, 'species']);
         Route::get('/game-data/animations/{configKey?}', [GameDataController::class, 'animations']);
         Route::get('/game-data/dialogue/{configKey?}', [GameDataController::class, 'dialogue']);
         Route::get('/game-data/room-template/{configKey?}', [GameDataController::class, 'roomTemplate']);
+        Route::get('/game-data/item-effects', [GameDataController::class, 'itemEffects']);
     });
 
     // Admin routes

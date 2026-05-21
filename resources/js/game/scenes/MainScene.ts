@@ -168,6 +168,7 @@ export class MainScene extends BaseScene {
     this.interaction.onInteraction((type) => {
       this.companion.emote.show(INTERACTION_EMOTE[type]);
       this.companion.dialogue.say(INTERACTION_DIALOGUE[type]);
+      this.store.update({ coins: this.store.getState().coins + 5 });
     });
 
     this.modeText = new Text({

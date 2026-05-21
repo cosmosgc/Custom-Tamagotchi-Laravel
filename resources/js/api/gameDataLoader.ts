@@ -67,6 +67,16 @@ export async function fetchRoomTemplate(configKey = 'default'): Promise<RoomConf
   return res.data;
 }
 
+export interface ItemEffectDef {
+  item_type: string;
+  effects: { stat: string; value: number }[];
+}
+
+export async function fetchItemEffects(): Promise<Record<string, ItemEffectDef>> {
+  const res = await api.get<Record<string, ItemEffectDef>>('/game-data/item-effects');
+  return res.data ?? {};
+}
+
 export async function fetchFurnitureCatalog(): Promise<FurnitureDef[]> {
   const res = await api.get<FurnitureDef[]>('/catalog');
   return (Array.isArray(res.data) ? res.data : []).map((f: any) => ({

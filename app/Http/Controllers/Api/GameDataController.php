@@ -7,6 +7,7 @@ use App\Models\AnimationConfig;
 use App\Models\CompanionSpecies;
 use App\Models\DialogueLine;
 use App\Models\FurnitureCatalog;
+use App\Models\ItemEffect;
 use App\Models\RoomTemplate;
 use Illuminate\Http\JsonResponse;
 
@@ -78,5 +79,18 @@ class GameDataController extends Controller
     {
         $catalog = FurnitureCatalog::all();
         return response()->json(['data' => ['furniture' => $catalog]]);
+    }
+
+    public function itemEffects(): JsonResponse
+    {
+        $effects = ItemEffect::all();
+        $result = [];
+        foreach ($effects as $e) {
+            $result[$e->item_id] = [
+                'item_type' => $e->item_type,
+                'effects' => $e->effects,
+            ];
+        }
+        return response()->json(['data' => $result]);
     }
 }

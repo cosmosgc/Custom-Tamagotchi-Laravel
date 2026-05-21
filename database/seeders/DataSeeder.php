@@ -6,6 +6,7 @@ use App\Models\AnimationConfig;
 use App\Models\CompanionSpecies;
 use App\Models\DialogueLine;
 use App\Models\FurnitureCatalog;
+use App\Models\ItemEffect;
 use App\Models\RoomTemplate;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -83,6 +84,19 @@ class DataSeeder extends Seeder
 
         foreach ($furnitureItems as $item) {
             FurnitureCatalog::updateOrCreate(['item_id' => $item['item_id']], $item);
+        }
+
+        $itemEffects = [
+            ['item_id' => 'berries', 'item_type' => 'food', 'label' => 'Fresh Berries', 'description' => 'A handful of sweet berries.', 'price' => 15, 'effects' => [['stat' => 'hunger', 'value' => 20], ['stat' => 'fun', 'value' => 5]]],
+            ['item_id' => 'cake', 'item_type' => 'food', 'label' => 'Celebration Cake', 'description' => 'A delicious slice of cake.', 'price' => 40, 'effects' => [['stat' => 'hunger', 'value' => 40], ['stat' => 'fun', 'value' => 10], ['stat' => 'affection', 'value' => 5]]],
+            ['item_id' => 'toy', 'item_type' => 'toy', 'label' => 'Toy Mouse', 'description' => 'A squeaky toy for playtime.', 'price' => 25, 'effects' => [['stat' => 'fun', 'value' => 30], ['stat' => 'energy', 'value' => -5]]],
+        ];
+
+        foreach ($itemEffects as $effect) {
+            ItemEffect::updateOrCreate(
+                ['item_id' => $effect['item_id'], 'item_type' => $effect['item_type']],
+                ['label' => $effect['label'], 'description' => $effect['description'], 'price' => $effect['price'], 'effects' => $effect['effects']]
+            );
         }
     }
 }
